@@ -229,6 +229,46 @@ const skillSets = [
 
 const majors = ["Ky thuat phan mem", "Khoa hoc may tinh", "He thong thong tin", "Tri tue nhan tao"];
 const goals = ["A+", "A", "B+"];
+const teamNames = [
+  "Team A+ Warriors",
+  "Tu Tuong Pro",
+  "Hoc Vui Cung Bac",
+  "Deadline Masters",
+  "Blue Scholars",
+  "Focus Five",
+  "Critical Thinkers",
+  "Presentation Crew",
+  "Study Sprint",
+  "A-Team Lab"
+];
+
+const teamDescriptions = [
+  "Nhom huong A+, hoc nghiem tuc, deadline-driven.",
+  "Nhom muc tieu thuyet trinh xuat sac va phan cong ro rang.",
+  "Nhom vui ve nhung lam viec nghiem tuc.",
+  "Tap trung hoan thanh task dung han va review cheo.",
+  "Uu tien trao doi thuong xuyen va tong hop tai lieu ky.",
+  "Nhom nho gon, cam ket cao, hop dung gio.",
+  "Manh ve phan tich, phan bien va lap luan.",
+  "Tap trung slide, noi dung va ky nang trinh bay.",
+  "Lam viec theo sprint ngan, co checklist tung tuan.",
+  "Huong diem cao, giu tien do va chat luong dong deu."
+];
+
+const teamSkillSets = [
+  ["Trach nhiem", "Chu dong"],
+  ["Thuyet trinh", "Giao tiep"],
+  ["Teamwork", "Tu hoc"],
+  ["Dung deadline", "Quan ly thoi gian"],
+  ["Tong hop tai lieu", "Ho tro nhom"],
+  ["Trach nhiem", "Teamwork"],
+  ["Tu duy phan bien", "Giai quyet van de"],
+  ["Thuyet trinh", "Leadership"],
+  ["Chu dong", "Dung deadline"],
+  ["Giao tiep", "Ho tro nhom"]
+];
+
+const teamCommitments = ["Hop dung gio", "Hoan thanh task dung han", "Chu dong trao doi", "Ton trong thanh vien"];
 
 function createGeneratedStudents() {
   return generatedNames.map((name, index) => {
@@ -252,12 +292,69 @@ function createGeneratedStudents() {
   });
 }
 
+function createSeedTeams(students) {
+  const studentsInTeam = students.filter((student) => student.status === "IN_TEAM");
+  const teams = [];
+
+  for (let index = 0; index < studentsInTeam.length; index += 5) {
+    const members = studentsInTeam.slice(index, index + 5);
+    if (!members.length) continue;
+    const teamIndex = Math.floor(index / 5);
+
+    teams.push({
+      id: teamIndex + 1,
+      name: teamNames[teamIndex] ?? `Study Team ${teamIndex + 1}`,
+      leaderId: members[0].id,
+      description: teamDescriptions[teamIndex] ?? "Nhom hoc tap co muc tieu ro rang va cam ket nghiem tuc.",
+      targetGrade: goals[teamIndex % goals.length],
+      maxMembers: 6,
+      status: "RECRUITING",
+      skills: teamSkillSets[teamIndex % teamSkillSets.length],
+      commitments: teamCommitments,
+      memberIds: members.map((student) => student.id)
+    });
+  }
+
+  return teams;
+}
+
+function teamsMatchStudentStatuses(data) {
+  const inTeamIds = new Set(data.students.filter((student) => student.status === "IN_TEAM").map((student) => student.id));
+  const coveredIds = new Set(data.teams.flatMap((team) => team.memberIds));
+
+  if (coveredIds.size !== inTeamIds.size) return false;
+
+  for (const id of coveredIds) {
+    if (!inTeamIds.has(id)) return false;
+  }
+
+  return true;
+}
+
+function normalizeSeedData(data) {
+  if (teamsMatchStudentStatuses(data)) return data;
+
+  const teams = createSeedTeams(data.students);
+  const teamIds = new Set(teams.map((team) => team.id));
+
+  return {
+    ...data,
+    teams,
+    joinRequests: data.joinRequests.filter((request) => teamIds.has(request.teamId))
+  };
+}
+
 initialData.students = [...initialData.students, ...createGeneratedStudents()];
+initialData.teams = createSeedTeams(initialData.students);
 
 async function ensureDataFile() {
   await mkdir(dataDir, { recursive: true });
   try {
-    await readFile(dataFile, "utf8");
+    const data = JSON.parse(await readFile(dataFile, "utf8"));
+    const normalizedData = normalizeSeedData(data);
+    if (normalizedData !== data) {
+      await writeFile(dataFile, JSON.stringify(normalizedData, null, 2), "utf8");
+    }
   } catch {
     await writeFile(dataFile, JSON.stringify(initialData, null, 2), "utf8");
   }

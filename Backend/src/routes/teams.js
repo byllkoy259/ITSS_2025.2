@@ -29,6 +29,28 @@ router.get("/", async (_req, res, next) => {
   }
 });
 
+router.get("/join-requests", async (req, res, next) => {
+  try {
+    const data = await readStore();
+    const studentId = req.query.studentId ? Number(req.query.studentId) : null;
+    const requests = data.joinRequests
+      .filter((request) => !studentId || request.studentId === studentId)
+      .map((request) => {
+        const team = data.teams.find((item) => item.id === request.teamId);
+        const student = data.students.find((item) => item.id === request.studentId);
+        return {
+          ...request,
+          team: team ? serializeTeam(team, data.students) : null,
+          student
+        };
+      });
+
+    res.json(requests);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post("/", async (req, res, next) => {
   try {
     const payload = createTeamSchema.parse(req.body);

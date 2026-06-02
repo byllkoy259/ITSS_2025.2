@@ -45,7 +45,7 @@
         "Giao tiếp",
         "Giải quyết vấn đề"
       ],
-      "bio": "asdasdasasdasd",
+      "bio": "sdasasdasdasdasdasdAsd",
       "github": "github.com/username",
       "linkedin": "linkedin.com/in/username",
       "website": "yoursite.com",
@@ -1169,75 +1169,260 @@
       "id": 1,
       "name": "Team A+ Warriors",
       "leaderId": 1,
-      "description": "Nhóm hướng A+, học nghiêm túc, deadline-driven.",
+      "description": "Nhom huong A+, hoc nghiem tuc, deadline-driven.",
       "targetGrade": "A+",
-      "maxMembers": 5,
+      "maxMembers": 6,
       "status": "RECRUITING",
       "skills": [
-        "Trách nhiệm",
-        "Chủ động"
+        "Trach nhiem",
+        "Chu dong"
       ],
       "commitments": [
-        "Họp đúng giờ",
-        "Hoàn thành task đúng hạn",
-        "Chủ động trao đổi",
-        "Tôn trọng thành viên"
+        "Hop dung gio",
+        "Hoan thanh task dung han",
+        "Chu dong trao doi",
+        "Ton trong thanh vien"
       ],
       "memberIds": [
         1,
-        2,
         3,
-        5
+        4,
+        5,
+        6
       ]
     },
     {
       "id": 2,
-      "name": "Tư Tưởng Pro",
-      "leaderId": 6,
-      "description": "Nhóm 4 người, mục tiêu thuyết trình xuất sắc.",
-      "targetGrade": "A+",
-      "maxMembers": 5,
+      "name": "Tu Tuong Pro",
+      "leaderId": 7,
+      "description": "Nhom muc tieu thuyet trinh xuat sac va phan cong ro rang.",
+      "targetGrade": "A",
+      "maxMembers": 6,
       "status": "RECRUITING",
       "skills": [
-        "Thuyết trình",
-        "Giao tiếp"
+        "Thuyet trinh",
+        "Giao tiep"
       ],
       "commitments": [
-        "Họp đúng giờ",
-        "Hoàn thành task đúng hạn",
-        "Chủ động trao đổi",
-        "Tôn trọng thành viên"
+        "Hop dung gio",
+        "Hoan thanh task dung han",
+        "Chu dong trao doi",
+        "Ton trong thanh vien"
       ],
       "memberIds": [
-        6,
-        4,
-        3,
-        5
+        7,
+        8,
+        9,
+        10,
+        11
       ]
     },
     {
       "id": 3,
-      "name": "Học Vui Cùng Bác",
-      "leaderId": 4,
-      "description": "Nhóm vui vẻ nhưng làm việc nghiêm túc.",
-      "targetGrade": "A",
-      "maxMembers": 5,
+      "name": "Hoc Vui Cung Bac",
+      "leaderId": 12,
+      "description": "Nhom vui ve nhung lam viec nghiem tuc.",
+      "targetGrade": "B+",
+      "maxMembers": 6,
       "status": "RECRUITING",
       "skills": [
         "Teamwork",
-        "Tự học"
+        "Tu hoc"
       ],
       "commitments": [
-        "Họp đúng giờ",
-        "Hoàn thành task đúng hạn",
-        "Chủ động trao đổi",
-        "Tôn trọng thành viên"
+        "Hop dung gio",
+        "Hoan thanh task dung han",
+        "Chu dong trao doi",
+        "Ton trong thanh vien"
       ],
       "memberIds": [
-        4,
-        1,
-        6,
-        5
+        12,
+        13,
+        14,
+        15,
+        16
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Deadline Masters",
+      "leaderId": 17,
+      "description": "Tap trung hoan thanh task dung han va review cheo.",
+      "targetGrade": "A+",
+      "maxMembers": 6,
+      "status": "RECRUITING",
+      "skills": [
+        "Dung deadline",
+        "Quan ly thoi gian"
+      ],
+      "commitments": [
+        "Hop dung gio",
+        "Hoan thanh task dung han",
+        "Chu dong trao doi",
+        "Ton trong thanh vien"
+      ],
+      "memberIds": [
+        17,
+        18,
+        19,
+        20,
+        21
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Blue Scholars",
+      "leaderId": 22,
+      "description": "Uu tien trao doi thuong xuyen va tong hop tai lieu ky.",
+      "targetGrade": "A",
+      "maxMembers": 6,
+      "status": "RECRUITING",
+      "skills": [
+        "Tong hop tai lieu",
+        "Ho tro nhom"
+      ],
+      "commitments": [
+        "Hop dung gio",
+        "Hoan thanh task dung han",
+        "Chu dong trao doi",
+        "Ton trong thanh vien"
+      ],
+      "memberIds": [
+        22,
+        23,
+        24,
+        25,
+        26
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Focus Five",
+      "leaderId": 27,
+      "description": "Nhom nho gon, cam ket cao, hop dung gio.",
+      "targetGrade": "B+",
+      "maxMembers": 6,
+      "status": "RECRUITING",
+      "skills": [
+        "Trach nhiem",
+        "Teamwork"
+      ],
+      "commitments": [
+        "Hop dung gio",
+        "Hoan thanh task dung han",
+        "Chu dong trao doi",
+        "Ton trong thanh vien"
+      ],
+      "memberIds": [
+        27,
+        28,
+        29,
+        30,
+        31
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Critical Thinkers",
+      "leaderId": 32,
+      "description": "Manh ve phan tich, phan bien va lap luan.",
+      "targetGrade": "A+",
+      "maxMembers": 6,
+      "status": "RECRUITING",
+      "skills": [
+        "Tu duy phan bien",
+        "Giai quyet van de"
+      ],
+      "commitments": [
+        "Hop dung gio",
+        "Hoan thanh task dung han",
+        "Chu dong trao doi",
+        "Ton trong thanh vien"
+      ],
+      "memberIds": [
+        32,
+        33,
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Presentation Crew",
+      "leaderId": 37,
+      "description": "Tap trung slide, noi dung va ky nang trinh bay.",
+      "targetGrade": "A",
+      "maxMembers": 6,
+      "status": "RECRUITING",
+      "skills": [
+        "Thuyet trinh",
+        "Leadership"
+      ],
+      "commitments": [
+        "Hop dung gio",
+        "Hoan thanh task dung han",
+        "Chu dong trao doi",
+        "Ton trong thanh vien"
+      ],
+      "memberIds": [
+        37,
+        38,
+        39,
+        40,
+        41
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Study Sprint",
+      "leaderId": 42,
+      "description": "Lam viec theo sprint ngan, co checklist tung tuan.",
+      "targetGrade": "B+",
+      "maxMembers": 6,
+      "status": "RECRUITING",
+      "skills": [
+        "Chu dong",
+        "Dung deadline"
+      ],
+      "commitments": [
+        "Hop dung gio",
+        "Hoan thanh task dung han",
+        "Chu dong trao doi",
+        "Ton trong thanh vien"
+      ],
+      "memberIds": [
+        42,
+        43,
+        44,
+        45,
+        46
+      ]
+    },
+    {
+      "id": 10,
+      "name": "A-Team Lab",
+      "leaderId": 47,
+      "description": "Huong diem cao, giu tien do va chat luong dong deu.",
+      "targetGrade": "A+",
+      "maxMembers": 6,
+      "status": "RECRUITING",
+      "skills": [
+        "Giao tiep",
+        "Ho tro nhom"
+      ],
+      "commitments": [
+        "Hop dung gio",
+        "Hoan thanh task dung han",
+        "Chu dong trao doi",
+        "Ton trong thanh vien"
+      ],
+      "memberIds": [
+        47,
+        48,
+        49,
+        50,
+        51
       ]
     }
   ],
@@ -1254,7 +1439,21 @@
       ],
       "message": "",
       "status": "PENDING",
-      "createdAt": "2026-06-02T01:04:11.334Z"
+      "createdAt": "2026-06-02T01:21:13.239Z"
+    },
+    {
+      "id": 2,
+      "teamId": 3,
+      "studentId": 2,
+      "confirmedCommitments": [
+        "Hop dung gio",
+        "Hoan thanh task dung han",
+        "Chu dong trao doi",
+        "Ton trong thanh vien"
+      ],
+      "message": "",
+      "status": "PENDING",
+      "createdAt": "2026-06-02T01:33:24.759Z"
     }
   ]
 }

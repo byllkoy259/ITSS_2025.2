@@ -34,6 +34,7 @@ export const api = {
   updateStudent: (id, payload) => request(`/students/${id}`, { method: "PUT", body: JSON.stringify(payload) }),
   getTeams: () => request("/teams"),
   createTeam: (payload) => request("/teams", { method: "POST", body: JSON.stringify(payload) }),
+  getJoinRequests: (studentId) => request(`/teams/join-requests${toQuery({ studentId })}`),
   createJoinRequest: (teamId, payload) =>
     request(`/teams/${teamId}/join-requests`, { method: "POST", body: JSON.stringify(payload) }),
   getProfile: () => request("/profile/me")
