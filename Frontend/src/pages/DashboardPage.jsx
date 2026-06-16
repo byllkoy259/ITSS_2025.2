@@ -1,31 +1,44 @@
-import { UserCheck, UserPlus, Users } from "lucide-react";
+import { Search, Target, UserCheck, UserPlus, Users } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
 import Filters from "../components/Filters.jsx";
 import GroupCard from "../components/GroupCard.jsx";
 import StatCard from "../components/StatCard.jsx";
 import StudentCard from "../components/StudentCard.jsx";
+import { goals } from "../constants/studymates.js";
 
 const studentsPerPage = 8;
 const groupsPerPage = 3;
+const allGroupGoals = "ALL";
 
 export default function DashboardPage({ classroom, students, teams, filters, setFilters, currentStudentId, isStudentInTeam = false, joinRequests = [], onJoinGroup, onInviteStudent, onViewStudent }) {
   const stats = classroom?.stats ?? {};
   const [page, setPage] = useState(1);
   const [groupPage, setGroupPage] = useState(1);
+  const [groupSearch, setGroupSearch] = useState("");
+  const [groupGoalFilter, setGroupGoalFilter] = useState(allGroupGoals);
+
+  const filteredTeams = useMemo(() => {
+    return teams.filter((team) => {
+      const matchName = groupSearch === "" || team.name.toLowerCase().includes(groupSearch.toLowerCase());
+      const matchGoal = groupGoalFilter === allGroupGoals || team.targetGrade === groupGoalFilter;
+      return matchName && matchGoal;
+    });
+  }, [teams, groupSearch, groupGoalFilter]);
+
   const totalPages = Math.max(1, Math.ceil(students.length / studentsPerPage));
-  const totalGroupPages = Math.max(1, Math.ceil(teams.length / groupsPerPage));
+  const totalGroupPages = Math.max(1, Math.ceil(filteredTeams.length / groupsPerPage));
   const visibleStudents = useMemo(() => {
     const start = (page - 1) * studentsPerPage;
     return students.slice(start, start + studentsPerPage);
   }, [page, students]);
   const visibleTeams = useMemo(() => {
     const start = (groupPage - 1) * groupsPerPage;
-    return teams.slice(start, start + groupsPerPage);
-  }, [groupPage, teams]);
+    return filteredTeams.slice(start, start + groupsPerPage);
+  }, [groupPage, filteredTeams]);
   const startIndex = students.length ? (page - 1) * studentsPerPage + 1 : 0;
   const endIndex = Math.min(page * studentsPerPage, students.length);
-  const groupStartIndex = teams.length ? (groupPage - 1) * groupsPerPage + 1 : 0;
-  const groupEndIndex = Math.min(groupPage * groupsPerPage, teams.length);
+  const groupStartIndex = filteredTeams.length ? (groupPage - 1) * groupsPerPage + 1 : 0;
+  const groupEndIndex = Math.min(groupPage * groupsPerPage, filteredTeams.length);
 
   useEffect(() => {
     setPage(1);
@@ -38,6 +51,10 @@ export default function DashboardPage({ classroom, students, teams, filters, set
   useEffect(() => {
     if (groupPage > totalGroupPages) setGroupPage(totalGroupPages);
   }, [groupPage, totalGroupPages]);
+
+  useEffect(() => {
+    setGroupPage(1);
+  }, [groupSearch, groupGoalFilter]);
 
   return (
     <main className="mx-auto max-w-[1580px] px-4 py-6 sm:px-6 lg:px-8">
@@ -110,7 +127,32 @@ export default function DashboardPage({ classroom, students, teams, filters, set
           <aside className="min-w-0">
             <div className="mb-4 flex items-center justify-between gap-3">
               <h2 className="text-lg font-bold text-slate-950">Danh sách nhóm</h2>
-              <span className="text-xs font-medium text-slate-500">{teams.length} nhóm</span>
+              <span className="text-xs font-medium text-slate-500">{filteredTeams.length}/{teams.length} nhóm</span>
+            </div>
+            <div className="mb-4 flex flex-col gap-2 sm:flex-row">
+              <div className="relative flex-1">
+                <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  value={groupSearch}
+                  onChange={(e) => setGroupSearch(e.target.value)}
+                  placeholder="Tìm theo tên nhóm..."
+                  className="h-10 w-full rounded-xl border border-slate-200 bg-white pl-9 pr-3 text-sm shadow-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
+                />
+              </div>
+              <div className="relative">
+                <Target size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                <select
+                  value={groupGoalFilter}
+                  onChange={(e) => setGroupGoalFilter(e.target.value)}
+                  className="h-10 w-full rounded-xl border border-slate-200 bg-white pl-9 pr-3 text-sm shadow-sm outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 sm:w-36"
+                >
+                  <option value={allGroupGoals}>Tất cả</option>
+                  {goals.filter((g) => g.value !== "ALL_GOALS").map((g) => (
+                    <option key={g.value} value={g.value}>{g.label}</option>
+                  ))}
+                </select>
+              </div>
             </div>
             <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-1">
               {visibleTeams.map((group) => (
@@ -124,9 +166,15 @@ export default function DashboardPage({ classroom, students, teams, filters, set
                 />
               ))}
             </div>
+            {filteredTeams.length === 0 && (
+              <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-slate-50 py-10 text-center">
+                <p className="text-sm font-semibold text-slate-500">Không tìm thấy nhóm phù hợp</p>
+                <p className="mt-1 text-xs text-slate-400">Thử thay đổi bộ lọc tìm kiếm</p>
+              </div>
+            )}
             <div className="mt-6 rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
               <p className="text-center text-sm font-medium text-slate-500">
-                Hiển thị {groupStartIndex}-{groupEndIndex} trong {teams.length} nhóm
+                Hiển thị {groupStartIndex}-{groupEndIndex} trong {filteredTeams.length} nhóm
               </p>
               <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
                 <button

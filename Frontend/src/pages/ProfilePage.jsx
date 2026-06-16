@@ -1,4 +1,4 @@
-import { Github, Globe, Linkedin, Pencil, Plus, Star, X } from "lucide-react";
+import { Github, Globe, Linkedin, MessageSquare, Pencil, Plus, Star, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { api } from "../api.js";
 import Badge from "../components/Badge.jsx";
@@ -46,21 +46,67 @@ export default function ProfilePage({ profile, onSaved }) {
       <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h2 className="text-2xl font-black tracking-normal text-slate-950 sm:text-3xl">Hồ sơ cá nhân</h2>
-          <p className="mt-2 text-sm text-slate-500">Cập nhật hồ sơ qua API `/api/students/{form.id}`.</p>
         </div>
         <button onClick={save} className="inline-flex h-11 w-fit items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 text-sm font-bold text-white hover:bg-blue-700"><Pencil size={17} /> Lưu thay đổi</button>
       </div>
       <div className="grid gap-6 lg:grid-cols-[360px_1fr]">
-        <aside className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm">
-          <img src={form.avatar} alt={form.name} className="mx-auto h-24 w-24 rounded-full object-cover ring-4 ring-slate-100" />
-          <h3 className="mt-4 text-lg font-black text-slate-950">{form.name}</h3>
-          <p className="text-sm text-slate-500">{form.studentCode}</p>
-          <div className="mt-3"><Badge tone="blue">{form.major}</Badge></div>
-          <div className="mt-6 flex items-center justify-center gap-1 text-amber-500">
-            {[1, 2, 3, 4].map((star) => <Star key={star} size={20} fill="currentColor" />)}
-            <Star size={20} className="text-amber-300" fill="currentColor" />
-            <span className="ml-2 text-sm font-semibold text-slate-700">{form.rating}</span>
+        <aside className="space-y-4">
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm">
+            <img src={form.avatar} alt={form.name} className="mx-auto h-24 w-24 rounded-full object-cover ring-4 ring-slate-100" />
+            <h3 className="mt-4 text-lg font-black text-slate-950">{form.name}</h3>
+            <p className="text-sm text-slate-500">{form.studentCode}</p>
+            <div className="mt-3"><Badge tone="blue">{form.major}</Badge></div>
+            <div className="mt-6 flex items-center justify-center gap-1">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                  key={star}
+                  size={20}
+                  fill="currentColor"
+                  className={star <= Math.round(form.rating ?? 0) ? "text-amber-500" : "text-slate-200"}
+                />
+              ))}
+              <span className="ml-2 text-sm font-semibold text-slate-700">{form.rating != null ? Number(form.rating).toFixed(1) : "--"}</span>
+            </div>
           </div>
+
+          {(form.reviews ?? []).length > 0 && (
+            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <div className="mb-4 flex items-center gap-2">
+                <MessageSquare size={16} className="text-blue-500" />
+                <h3 className="text-sm font-black text-slate-950">Đánh giá từ người khác</h3>
+                <span className="ml-auto rounded-full bg-blue-50 px-2 py-0.5 text-xs font-bold text-blue-600">{(form.reviews ?? []).length}</span>
+              </div>
+              <div className="space-y-3">
+                {(form.reviews ?? []).map((review, idx) => (
+                  <div key={review.id ?? idx} className="rounded-xl border border-slate-100 bg-slate-50 p-3">
+                    <div className="flex items-center gap-2">
+                      <img
+                        src={review.reviewer?.avatar ?? `https://api.dicebear.com/7.x/avataaars/svg?seed=${review.reviewerId}`}
+                        alt={review.reviewer?.name ?? "Ẩn danh"}
+                        className="h-7 w-7 rounded-full object-cover"
+                      />
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-xs font-bold text-slate-800">{review.reviewer?.name ?? "Ẩn danh"}</p>
+                        <div className="flex items-center gap-0.5">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <Star
+                              key={star}
+                              size={11}
+                              fill="currentColor"
+                              className={star <= review.rating ? "text-amber-500" : "text-slate-200"}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                    {review.content && (
+                      <p className="mt-2 text-xs leading-5 text-slate-600">{review.content}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </aside>
         <div className="space-y-6">
           <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
