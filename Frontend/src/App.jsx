@@ -281,11 +281,11 @@ export default function App() {
           <div style="text-align:left">
             <label for="review-rating" style="display:block;margin-bottom:6px;font-size:13px;font-weight:700;color:#334155">Số sao</label>
             <select id="review-rating" class="swal2-input" style="width:100%;margin:0 0 14px 0">
-              <option value="5">5 sao</option>
-              <option value="4">4 sao</option>
-              <option value="3">3 sao</option>
-              <option value="2">2 sao</option>
-              <option value="1">1 sao</option>
+              <option value="5">5 ★★★★★</option>
+              <option value="4">4 ★★★★☆</option>
+              <option value="3">3 ★★★☆☆</option>
+              <option value="2">2 ★★☆☆☆</option>
+              <option value="1">1 ★☆☆☆☆</option>
             </select>
             <label for="review-content" style="display:block;margin-bottom:6px;font-size:13px;font-weight:700;color:#334155">Nhận xét</label>
             <textarea id="review-content" class="swal2-textarea" maxlength="500" placeholder="Nhập nhận xét của bạn..." style="width:100%;min-height:110px;margin:0"></textarea>

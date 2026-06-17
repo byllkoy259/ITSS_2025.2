@@ -366,7 +366,14 @@ function normalizeStudentReviews(data) {
 
 function normalizeSeedData(data) {
   const reviewsModified = normalizeStudentReviews(data);
-  if (teamsMatchStudentStatuses(data)) return reviewsModified ? { ...data } : data;
+
+  // Only reseed teams when the data file has no teams at all (fresh/empty state).
+  // Do NOT wipe existing teams just because student statuses are inconsistent —
+  // that would destroy user-created teams due to a race condition between
+  // readStore() calls and in-flight writes.
+  if (data.teams.length > 0) {
+    return reviewsModified ? { ...data } : data;
+  }
 
   const teams = createSeedTeams(data.students);
   const teamIds = new Set(teams.map((team) => team.id));

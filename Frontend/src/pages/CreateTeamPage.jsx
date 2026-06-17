@@ -1,5 +1,6 @@
-import { BookOpen, Plus } from "lucide-react";
+import { BookOpen, Loader2, Plus } from "lucide-react";
 import React, { useState } from "react";
+import Swal from "sweetalert2";
 import { api } from "../api.js";
 import { defaultCommitments, skillSuggestions } from "../constants/studymates.js";
 
@@ -15,18 +16,32 @@ export default function CreateTeamPage({ profile, onCreated, onCancel }) {
     commitments: defaultCommitments.join(", ")
   });
 
+  const [loading, setLoading] = useState(false);
+
   async function submit(event) {
     event.preventDefault();
-    await api.createTeam({
-      name: form.name,
-      description: form.description,
-      targetGrade: form.targetGrade,
-      maxMembers: Number(form.maxMembers),
-      skills: form.skills.split(",").map((item) => item.trim()).filter(Boolean),
-      commitments: form.commitments.split(",").map((item) => item.trim()).filter(Boolean),
-      leaderId: profile.id
-    });
-    onCreated();
+    setLoading(true);
+    try {
+      await api.createTeam({
+        name: form.name,
+        description: form.description,
+        targetGrade: form.targetGrade,
+        maxMembers: Number(form.maxMembers),
+        skills: form.skills.split(",").map((item) => item.trim()).filter(Boolean),
+        commitments: form.commitments.split(",").map((item) => item.trim()).filter(Boolean),
+        leaderId: profile.id
+      });
+      onCreated();
+    } catch (err) {
+      Swal.fire({
+        title: "Tạo nhóm thất bại",
+        text: err.message || "Đã xảy ra lỗi, vui lòng thử lại.",
+        icon: "error",
+        confirmButtonColor: "#ef4444"
+      });
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -91,8 +106,11 @@ export default function CreateTeamPage({ profile, onCreated, onCancel }) {
           </div>
         </section>
         <div className="flex justify-end gap-3">
-          <button type="button" onClick={onCancel} className="h-11 rounded-xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-900 shadow-sm hover:bg-slate-50">Hủy</button>
-          <button className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 text-sm font-bold text-white hover:bg-blue-700"><Plus size={17} /> Tạo nhóm</button>
+          <button type="button" onClick={onCancel} disabled={loading} className="h-11 rounded-xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-900 shadow-sm hover:bg-slate-50 disabled:opacity-50">Hủy</button>
+          <button disabled={loading} className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 text-sm font-bold text-white hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed">
+            {loading ? <Loader2 size={17} className="animate-spin" /> : <Plus size={17} />}
+            {loading ? "Đang tạo..." : "Tạo nhóm"}
+          </button>
         </div>
       </form>
     </main>
